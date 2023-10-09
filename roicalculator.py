@@ -1,4 +1,4 @@
-
+import time
 class ROICalculator():
     def __init__(self, name, property, location):
         self.name = name
@@ -66,9 +66,9 @@ class ROICalculator():
         print(f"EXPENSES FOR {self.property}")
         print("="*20)
         for key, value in expenses.items():
-            print(f"{key} : {value}")
+            print(f"\t{key} : {value}")
 
-        print(f"Total EXPENSES are {sum(self.expenses.values())}")
+        print(f"Total EXPENSES are {sum(expenses.values())}")
         self.expenses = expenses
 
     def getCashFlow(self):
@@ -77,25 +77,39 @@ class ROICalculator():
         return sum(income) - sum(expenses)
 
     def getInvestments(self):
-        print("Now its time to enter your INVESTMENTS!")
+        
         defaultPayments = ["Down Payments", "Closing Costs", "Repairs", "Miscellanous"]
         investments = {}
+        print("="*20)
+        print("Step 3 -> Now its time to enter your INVESTMENTS!")
         for payment in defaultPayments:
             while True:
-                value = input(f"Enter value for {payment} (int): ")
+                value = input(f"Enter value for {payment} (float/int): ")
                 if value.isdigit():
-                    investments[payment] = int(value)
+                    investments[payment] = float(value)
                     break
-                    
+
+        print("="*20)   
         for key, value in investments.items():
             print(f"{key} : {value}")
 
-            self.investments = investments
+        print(f"Total investments: {sum(investments.values())}")
+        self.investments = investments
 
     def getROI(self):
         print("Calculating ROI...")
+        time.sleep(3)
         investments = sum(self.investments.values())
         cashFlow = self.getCashFlow() * 12
-        print(f"Total investments: {investments}\n Total cashFlow: {cashFlow}")
+        print(f"Total investments: {investments}\nTotal cashFlow: {cashFlow}")
         ROI = cashFlow / investments
         print(f"ROI is {round(ROI*100,5)}%")
+        print("Thanks for using our ROICalculator, have a nice day")
+
+    def runCalculator(self):
+        print("\n\nThis is a 3-step process where you must first enter your incomes from this property\nThen enter your expenses for the said property and\nfinally enter whatever inital investments you have made.")
+        print("Once that is done, we can give you your estimated ROI(Return On Investment)!")
+        self.getIncomes()
+        self.getExpenses()
+        self.getInvestments()
+        self.getROI()
